@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -110,5 +111,26 @@ public class FerramentaServiceTests {
 
         verify(repository, times(1)).deleteById("1");
     }
+
+    @Test
+    void testErroRestTemplateOutroStatus() {
+        // Simula uma exceção diferente de 404, como 500
+        HttpClientErrorException ex = HttpClientErrorException.create(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Erro interno",
+                null,
+                null,
+                null
+        );
+
+        doThrow(ex).when(restTemplate).getForObject(anyString(), eq(UsuarioResponse.class));
+
+        HttpClientErrorException erro = Assertions.assertThrows(HttpClientErrorException.class, () -> {
+            service.remover("1", "admin@teste.com");
+        });
+
+        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, erro.getStatusCode());
+    }
+
 
 }
