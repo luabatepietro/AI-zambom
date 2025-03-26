@@ -76,7 +76,7 @@ public class FerramentaServiceTests {
     void testRemoverComUsuarioNaoEncontrado() {
         doThrow(new HttpClientErrorException(
                 org.springframework.http.HttpStatus.NOT_FOUND,
-                "Usuário não encontrado"
+                "usuario nao localizado"
         )).when(restTemplate).getForObject(anyString(), eq(UsuarioResponse.class));
 
 
@@ -114,7 +114,6 @@ public class FerramentaServiceTests {
 
     @Test
     void testErroRestTemplateOutroStatus() {
-        // Simula uma exceção diferente de 404, como 500
         HttpClientErrorException ex = HttpClientErrorException.create(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "Erro interno",

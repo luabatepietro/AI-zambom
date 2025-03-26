@@ -44,7 +44,7 @@ public class FerramentaControllerTests {
         Ferramenta f = new Ferramenta();
         f.setId("1");
         f.setNome("Furadeira");
-        f.setDescricao("Para furos precisos");
+        f.setDescricao("furos precisos");
         f.setCategoria("Mecânica");
         f.setEmailUsuario("admin@teste.com");
         f.setNomeUsuario("Admin");
@@ -91,7 +91,7 @@ public class FerramentaControllerTests {
         f.setNome("Chave inglesa");
 
         when(service.cadastrar(any(Ferramenta.class), eq("user@teste.com")))
-                .thenThrow(new RuntimeException("403 - Usuário sem permissão."));
+                .thenThrow(new RuntimeException("403 - usuario nao tem essa permissao."));
 
         try {
             mockMvc.perform(post("/api/ferramenta")
@@ -99,9 +99,9 @@ public class FerramentaControllerTests {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(f)))
                     .andReturn();
-            Assertions.fail("Esperava exceção, mas a requisição foi processada com sucesso.");
+            Assertions.fail("esperava execção mas deu certo.");
         } catch (Exception ex) {
-            Assertions.assertTrue(ex.getCause().getMessage().contains("403 - Usuário sem permissão."));
+            Assertions.assertTrue(ex.getCause().getMessage().contains("403 - usuario nao tem essa permissao."));
         }
     }
 

@@ -25,6 +25,7 @@ public class FerramentaController {
         service.remover(id, email);
     }
 
+
     @GetMapping
     public List<Ferramenta> listarFerramentas() {
         return service.listar();

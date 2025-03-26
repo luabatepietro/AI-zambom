@@ -25,12 +25,12 @@ public class FerramentaService {
         try {
             UsuarioResponse usuario = restTemplate.getForObject(API_USUARIO + email, UsuarioResponse.class);
             if (adminRequired && !"ADMIN".equalsIgnoreCase(usuario.getPapel())) {
-                throw new RuntimeException("403 - Usuário sem permissão.");
+                throw new RuntimeException("403 - suario nao tem essa permissao.");
             }
             return usuario;
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new RuntimeException("404 - Usuário não encontrado.");
+                throw new RuntimeException("404 - suario nao encontrado.");
             }
             throw e;
         }
