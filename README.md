@@ -1,1 +1,1 @@
-[![codecov](https://codecov.io/gh/luabatepietro/AI_zambom/branch/main/graph/badge.svg)](https://codecov.io/gh/luabatepietro/AI_zambom)
+![Coverage](https://img.shields.io/badge/coverage-93.37%25-brightgreen)
