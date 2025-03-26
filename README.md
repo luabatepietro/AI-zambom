@@ -1,1 +1,1 @@
-![Coverage](https://img.shields.io/badge/coverage-93.37%25-brightgreen)
+![Cobertura de Testes](.github/badges/jacoco.svg)
