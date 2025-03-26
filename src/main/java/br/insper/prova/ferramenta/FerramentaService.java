@@ -1,6 +1,7 @@
 package br.insper.prova.ferramenta;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -27,8 +28,11 @@ public class FerramentaService {
                 throw new RuntimeException("403 - Usuário sem permissão.");
             }
             return usuario;
-        } catch (HttpClientErrorException.NotFound e) {
-            throw new RuntimeException("404 - Usuário não encontrado.");
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new RuntimeException("404 - Usuário não encontrado.");
+            }
+            throw e;
         }
     }
 
