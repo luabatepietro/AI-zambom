@@ -1,7 +1,10 @@
 package br.insper.prova.artigo;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -9,26 +12,37 @@ import java.util.List;
 @RequestMapping("/artigos")
 public class ArtigoController {
 
-    private final ArtigoService service;
+    private final ArtigoService artigoService;
 
-    public ArtigoController(ArtigoService service) {
-        this.service = service;
+    public ArtigoController(ArtigoService artigoService) {
+        this.artigoService = artigoService;
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping
-    public void create(@RequestBody Artigo artigo) {
-        service.create(artigo);
+    public Artigo saveArtigo(@AuthenticationPrincipal Jwt jwt, @RequestBody Artigo artigo) {
+        String email = jwt.getClaimAsString("https://musica-insper.com/email");
+        List<String> roles = jwt.getClaimAsStringList("https://musica-insper.com/roles");
+
+        if (!roles.contains("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        artigo.setEmail(email);
+        return artigoService.save(artigo);
     }
 
     @GetMapping
-    public List<Artigo> read() {
-        return service.read();
+    public List<Artigo> listArtigos() {
+        return artigoService.list();
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
-        service.delete(id);
+    public void deleteArtigo(@AuthenticationPrincipal Jwt jwt, @PathVariable String id) {
+        List<String> roles = jwt.getClaimAsStringList("https://musica-insper.com/roles");
+        if (!roles.contains("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        artigoService.delete(id);
     }
 }

@@ -7,21 +7,21 @@ import java.util.List;
 @Service
 public class ArtigoService {
 
-    private final ArtigoRepository repository;
+    private final ArtigoRepository artigoRepository;
 
-    public ArtigoService(ArtigoRepository repository) {
-        this.repository = repository;
+    public ArtigoService(ArtigoRepository artigoRepository) {
+        this.artigoRepository = artigoRepository;
     }
 
-    public void create(Artigo artigo) {
-        repository.save(artigo);
+    public Artigo save(Artigo artigo) {
+        return artigoRepository.save(artigo);
     }
 
-    public List<Artigo> read() {
-        return repository.findAll();
+    public List<Artigo> list() {
+        return artigoRepository.findAll();
     }
 
     public void delete(String id) {
-        repository.deleteById(id);
+        artigoRepository.deleteById(id);
     }
 }

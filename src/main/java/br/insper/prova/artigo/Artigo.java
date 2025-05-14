@@ -13,6 +13,7 @@ public class Artigo {
     private String prioridade;
     private String email;
 
+    // Getters e Setters
     public String getId() {
         return id;
     }
