@@ -49,4 +49,4 @@ jobs:
         script: |
           docker stop prova
           docker rm --force prova
-          docker run -d -p 8080:8080 --name prova luabatepietro/prova:${{ github.sha }}
+          docker run -d -p 8080:8080 -e string_conexao=${{ secrets.CONNECTION_STRING }} --name prova luabatepietro/prova:${{ github.sha }}
