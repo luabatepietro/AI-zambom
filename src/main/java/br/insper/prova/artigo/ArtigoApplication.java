@@ -10,3 +10,4 @@ public class ArtigoApplication {
         SpringApplication.run(ArtigoApplication.class, args);
     }
 }
+
